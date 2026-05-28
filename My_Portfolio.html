@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Karthick Shanmugam — Automation Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+/* ── Reset & Variables ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D1B2A;
+  --steel:#1B4F72;
+  --accent:#2E86C1;
+  --orange:#E67E22;
+  --orange2:#F39C12;
+  --green:#1E8449;
+  --white:#F8FAFC;
+  --gray:#8899AA;
+  --light:#EAF4FB;
+  --bg:#060E18;
+  --bg2:#0A1628;
+  --card:#0F1E30;
+  --card2:#132338;
+  --border:#1B3048;
+  --mono:'Space Mono',monospace;
+  --sans:'DM Sans',sans-serif;
+  --display:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:var(--sans);
+  font-weight:300;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── Custom Cursor ─────────────────────────────────────────────── */
+#cursor{
+  position:fixed;width:10px;height:10px;
+  background:var(--orange);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transition:transform 0.15s ease,opacity 0.15s;
+  transform:translate(-50%,-50%);
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1.5px solid var(--accent);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transition:transform 0.4s cubic-bezier(.23,1,.32,1),opacity 0.3s;
+  transform:translate(-50%,-50%);
+  opacity:0.6;
+}
+body:hover #cursor{opacity:1}
+
+/* ── Grid noise overlay ────────────────────────────────────────── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(46,134,193,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(46,134,193,0.03) 1px,transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;z-index:0;
+}
+
+/* ── Navigation ────────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:0 5vw;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+  background:rgba(6,14,24,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:all 0.3s;
+}
+.nav-logo{
+  font-family:var(--mono);font-size:13px;color:var(--orange);
+  letter-spacing:0.08em;
+}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--gray);text-decoration:none;
+  transition:color 0.2s;
+  position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--orange);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.25s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-status{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:10px;color:var(--green);
+  letter-spacing:0.08em;
+}
+.status-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  animation:pulse-dot 2s infinite;
+}
+@keyframes pulse-dot{
+  0%,100%{box-shadow:0 0 0 0 rgba(30,132,73,0.4)}
+  50%{box-shadow:0 0 0 5px rgba(30,132,73,0)}
+}
+
+/* ── Hero ──────────────────────────────────────────────────────── */
+#hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:100px 5vw 60px;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 40%,rgba(27,79,114,0.25) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%,rgba(230,126,34,0.08) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-circuit{
+  position:absolute;right:-60px;top:50%;transform:translateY(-50%);
+  width:500px;height:500px;opacity:0.06;
+  pointer-events:none;
+}
+.hero-inner{max-width:700px;position:relative;z-index:1}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:11px;
+  color:var(--orange);letter-spacing:0.12em;text-transform:uppercase;
+  border:1px solid rgba(230,126,34,0.3);
+  padding:6px 14px;border-radius:2px;
+  margin-bottom:28px;
+  background:rgba(230,126,34,0.05);
+}
+.hero-tag::before{content:'>';margin-right:2px}
+h1.hero-name{
+  font-family:var(--display);font-size:clamp(48px,8vw,80px);
+  font-weight:800;line-height:0.95;letter-spacing:-0.02em;
+  color:var(--white);margin-bottom:8px;
+}
+h1.hero-name .line2{
+  color:transparent;
+  -webkit-text-stroke:1px rgba(248,250,252,0.25);
+}
+.hero-role{
+  font-family:var(--display);font-size:clamp(16px,2.5vw,20px);
+  font-weight:600;color:var(--accent);margin-bottom:24px;
+  letter-spacing:0.02em;
+}
+.hero-desc{
+  font-size:15px;line-height:1.7;color:rgba(248,250,252,0.65);
+  max-width:560px;margin-bottom:36px;
+}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--orange);color:var(--bg);
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:13px 24px;border-radius:2px;
+  text-decoration:none;border:none;cursor:none;
+  transition:background 0.2s,transform 0.2s;
+  position:relative;overflow:hidden;
+}
+.btn-primary:hover{background:var(--orange2);transform:translateY(-2px)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:transparent;color:var(--white);
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:13px 24px;border-radius:2px;
+  text-decoration:none;cursor:none;
+  border:1px solid var(--border);
+  transition:border-color 0.2s,transform 0.2s;
+}
+.btn-secondary:hover{border-color:var(--accent);transform:translateY(-2px)}
+
+.hero-stats{
+  display:flex;gap:36px;margin-top:48px;
+  padding-top:36px;border-top:1px solid var(--border);
+  flex-wrap:wrap;
+}
+.stat{display:flex;flex-direction:column;gap:4px}
+.stat-val{
+  font-family:var(--display);font-size:28px;font-weight:800;
+  color:var(--orange);line-height:1;
+}
+.stat-label{
+  font-family:var(--mono);font-size:9px;
+  color:var(--gray);letter-spacing:0.12em;text-transform:uppercase;
+}
+
+/* ── Scroll indicator ──────────────────────────────────────────── */
+.scroll-hint{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:9px;color:var(--gray);
+  letter-spacing:0.1em;text-transform:uppercase;
+  animation:float 2.5s ease-in-out infinite;
+}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--accent),transparent)}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* ── Section base ──────────────────────────────────────────────── */
+section{padding:80px 5vw;position:relative;z-index:1}
+.sec-label{
+  font-family:var(--mono);font-size:10px;
+  color:var(--orange);letter-spacing:0.16em;text-transform:uppercase;
+  margin-bottom:10px;display:flex;align-items:center;gap:10px;
+}
+.sec-label::before{content:'//'}
+.sec-title{
+  font-family:var(--display);font-size:clamp(28px,4vw,42px);
+  font-weight:800;color:var(--white);line-height:1.1;
+  margin-bottom:48px;
+}
+.sec-title em{color:var(--accent);font-style:normal}
+
+/* ── About / Skills grid ───────────────────────────────────────── */
+#about .grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:48px;align-items:start;
+}
+@media(max-width:768px){#about .grid{grid-template-columns:1fr}}
+.about-text p{
+  font-size:15px;line-height:1.8;
+  color:rgba(248,250,252,0.7);margin-bottom:16px;
+}
+.about-text p b{color:var(--white);font-weight:500}
+.skills-grid{display:flex;flex-direction:column;gap:10px}
+.skill-bar{position:relative}
+.skill-meta{
+  display:flex;justify-content:space-between;
+  margin-bottom:6px;
+}
+.skill-name{
+  font-family:var(--mono);font-size:10px;
+  color:var(--white);letter-spacing:0.08em;
+}
+.skill-pct{
+  font-family:var(--mono);font-size:10px;color:var(--orange);
+}
+.skill-track{
+  height:3px;background:var(--border);border-radius:2px;overflow:hidden;
+}
+.skill-fill{
+  height:100%;border-radius:2px;
+  background:linear-gradient(90deg,var(--accent),var(--orange));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 1.2s cubic-bezier(.23,1,.32,1);
+}
+.skill-fill.animate{transform:scaleX(1)}
+
+/* ── Experience ────────────────────────────────────────────────── */
+#experience{background:var(--bg2)}
+.timeline{position:relative;padding-left:28px}
+.timeline::before{
+  content:'';position:absolute;left:0;top:8px;bottom:8px;
+  width:1px;background:linear-gradient(to bottom,var(--accent),transparent);
+}
+.timeline-item{
+  position:relative;margin-bottom:40px;
+}
+.timeline-item::before{
+  content:'';position:absolute;left:-32px;top:6px;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--orange);border:2px solid var(--bg2);
+  box-shadow:0 0 0 3px rgba(230,126,34,0.2);
+}
+.t-period{
+  font-family:var(--mono);font-size:9px;
+  color:var(--orange);letter-spacing:0.1em;text-transform:uppercase;
+  margin-bottom:6px;
+}
+.t-role{
+  font-family:var(--display);font-size:17px;font-weight:700;
+  color:var(--white);margin-bottom:3px;
+}
+.t-company{
+  font-family:var(--mono);font-size:10px;
+  color:var(--accent);margin-bottom:12px;letter-spacing:0.05em;
+}
+.t-bullets{list-style:none;display:flex;flex-direction:column;gap:7px}
+.t-bullets li{
+  font-size:13.5px;color:rgba(248,250,252,0.65);
+  line-height:1.6;padding-left:16px;position:relative;
+}
+.t-bullets li::before{
+  content:'▸';position:absolute;left:0;
+  color:var(--accent);font-size:10px;top:2px;
+}
+.t-bullets li b{color:var(--white);font-weight:500}
+
+/* ── Projects ──────────────────────────────────────────────────── */
+.projects-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:20px;
+}
+.project-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:4px;padding:28px;
+  position:relative;overflow:hidden;
+  transition:border-color 0.3s,transform 0.3s;
+  cursor:none;
+}
+.project-card::before{
+  content:'';position:absolute;
+  inset:0;opacity:0;
+  background:radial-gradient(ellipse at var(--mx,50%) var(--my,50%),rgba(46,134,193,0.08),transparent 60%);
+  transition:opacity 0.3s;
+}
+.project-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.project-card:hover::before{opacity:1}
+.proj-tag{
+  display:inline-block;
+  font-family:var(--mono);font-size:9px;
+  color:var(--orange);letter-spacing:0.1em;text-transform:uppercase;
+  border:1px solid rgba(230,126,34,0.3);
+  padding:3px 8px;border-radius:2px;margin-bottom:16px;
+}
+.proj-title{
+  font-family:var(--display);font-size:16px;font-weight:700;
+  color:var(--white);margin-bottom:10px;line-height:1.3;
+}
+.proj-desc{
+  font-size:13px;color:rgba(248,250,252,0.6);
+  line-height:1.7;margin-bottom:16px;
+}
+.proj-stack{display:flex;flex-wrap:wrap;gap:6px}
+.stack-chip{
+  font-family:var(--mono);font-size:9px;
+  background:rgba(46,134,193,0.1);
+  color:var(--accent);border:1px solid rgba(46,134,193,0.2);
+  padding:3px 8px;border-radius:2px;letter-spacing:0.05em;
+}
+.proj-badge{
+  position:absolute;top:16px;right:16px;
+  font-family:var(--mono);font-size:8px;
+  background:rgba(30,132,73,0.15);color:#2ECC71;
+  border:1px solid rgba(30,132,73,0.3);
+  padding:3px 8px;border-radius:2px;letter-spacing:0.08em;
+}
+
+/* ── Certifications ────────────────────────────────────────────── */
+#certifications{background:var(--bg2)}
+.certs-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
+}
+.cert-card{
+  display:flex;gap:16px;align-items:flex-start;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:4px;padding:20px;
+  transition:border-color 0.3s;
+}
+.cert-card:hover{border-color:var(--orange)}
+.cert-icon{
+  width:40px;height:40px;flex-shrink:0;
+  border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+}
+.cert-icon.done{background:rgba(30,132,73,0.15)}
+.cert-icon.wip {background:rgba(46,134,193,0.15)}
+.cert-icon.up  {background:rgba(230,126,34,0.15)}
+.cert-name{
+  font-family:var(--display);font-size:13px;font-weight:700;
+  color:var(--white);margin-bottom:4px;
+}
+.cert-by{
+  font-family:var(--mono);font-size:9px;
+  color:var(--gray);letter-spacing:0.06em;margin-bottom:6px;
+}
+.cert-status{
+  font-family:var(--mono);font-size:9px;
+  padding:2px 8px;border-radius:2px;
+  letter-spacing:0.08em;text-transform:uppercase;display:inline-block;
+}
+.cert-status.done{background:rgba(30,132,73,0.15);color:#2ECC71;border:1px solid rgba(30,132,73,0.25)}
+.cert-status.wip {background:rgba(46,134,193,0.15);color:var(--accent);border:1px solid rgba(46,134,193,0.25)}
+.cert-status.up  {background:rgba(230,126,34,0.1);color:var(--orange);border:1px solid rgba(230,126,34,0.2)}
+
+/* ── Stack / Tech ──────────────────────────────────────────────── */
+.stack-section{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:16px;
+}
+.stack-group{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:4px;padding:20px;
+}
+.stack-group-title{
+  font-family:var(--mono);font-size:9px;
+  color:var(--orange);letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:14px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+.stack-items{display:flex;flex-wrap:wrap;gap:7px}
+.stack-item{
+  font-family:var(--mono);font-size:9px;
+  background:rgba(27,79,114,0.3);
+  color:rgba(248,250,252,0.75);
+  border:1px solid var(--border);
+  padding:4px 10px;border-radius:2px;
+  letter-spacing:0.05em;
+  transition:background 0.2s,color 0.2s;
+}
+.stack-item:hover{background:rgba(46,134,193,0.2);color:var(--white)}
+
+/* ── Contact ───────────────────────────────────────────────────── */
+#contact{
+  text-align:center;
+  background:linear-gradient(to bottom,var(--bg),var(--bg2));
+}
+.contact-inner{max-width:600px;margin:0 auto}
+.contact-desc{
+  font-size:15px;color:rgba(248,250,252,0.6);
+  line-height:1.7;margin-bottom:40px;
+}
+.contact-links{
+  display:flex;justify-content:center;gap:16px;flex-wrap:wrap;
+  margin-bottom:48px;
+}
+.contact-link{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:11px;letter-spacing:0.08em;
+  color:var(--white);text-decoration:none;
+  background:var(--card);border:1px solid var(--border);
+  padding:12px 20px;border-radius:3px;
+  transition:border-color 0.2s,transform 0.2s;
+  cursor:none;
+}
+.contact-link:hover{border-color:var(--accent);transform:translateY(-2px)}
+.contact-link svg{width:16px;height:16px;flex-shrink:0}
+.contact-email{
+  font-family:var(--mono);font-size:14px;
+  color:var(--orange);letter-spacing:0.05em;
+  display:block;margin-bottom:8px;
+}
+
+/* ── Footer ────────────────────────────────────────────────────── */
+footer{
+  border-top:1px solid var(--border);
+  padding:24px 5vw;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-left{
+  font-family:var(--mono);font-size:10px;color:var(--gray);
+  letter-spacing:0.06em;
+}
+.footer-right{
+  font-family:var(--mono);font-size:10px;color:var(--gray);
+  letter-spacing:0.06em;
+}
+.footer-right span{color:var(--orange)}
+
+/* ── Reveal animations ─────────────────────────────────────────── */
+.reveal{
+  opacity:0;transform:translateY(24px);
+  transition:opacity 0.7s ease,transform 0.7s ease;
+}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+
+/* ── Mobile nav ────────────────────────────────────────────────── */
+@media(max-width:640px){
+  .nav-links{display:none}
+  .nav-status{display:none}
+  body{cursor:auto}
+  #cursor,#cursor-ring{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-logo">KS<span>.</span>dev</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    Open to Work
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Decorative circuit SVG -->
+  <svg class="hero-circuit" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="50" y="50" width="300" height="300" rx="2" stroke="white" stroke-width="0.5"/>
+    <line x1="50" y1="150" x2="350" y2="150" stroke="white" stroke-width="0.5"/>
+    <line x1="50" y1="250" x2="350" y2="250" stroke="white" stroke-width="0.5"/>
+    <line x1="150" y1="50" x2="150" y2="350" stroke="white" stroke-width="0.5"/>
+    <line x1="250" y1="50" x2="250" y2="350" stroke="white" stroke-width="0.5"/>
+    <circle cx="150" cy="150" r="6" stroke="white" stroke-width="0.8"/>
+    <circle cx="250" cy="150" r="4" fill="white" opacity="0.5"/>
+    <circle cx="150" cy="250" r="4" fill="white" opacity="0.5"/>
+    <circle cx="250" cy="250" r="6" stroke="white" stroke-width="0.8"/>
+    <rect x="180" y="180" width="40" height="40" rx="1" stroke="white" stroke-width="0.8"/>
+    <line x1="200" y1="50" x2="200" y2="180" stroke="white" stroke-width="0.5" stroke-dasharray="4 4"/>
+    <line x1="200" y1="220" x2="200" y2="350" stroke="white" stroke-width="0.5" stroke-dasharray="4 4"/>
+    <line x1="50" y1="200" x2="180" y2="200" stroke="white" stroke-width="0.5" stroke-dasharray="4 4"/>
+    <line x1="220" y1="200" x2="350" y2="200" stroke="white" stroke-width="0.5" stroke-dasharray="4 4"/>
+    <circle cx="200" cy="200" r="2" fill="white"/>
+    <rect x="90" y="90" width="20" height="12" rx="1" stroke="white" stroke-width="0.5"/>
+    <rect x="290" y="90" width="20" height="12" rx="1" stroke="white" stroke-width="0.5"/>
+    <rect x="90" y="298" width="20" height="12" rx="1" stroke="white" stroke-width="0.5"/>
+    <rect x="290" y="298" width="20" height="12" rx="1" stroke="white" stroke-width="0.5"/>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="hero-tag reveal">Automation Engineer — Bengaluru, India</div>
+    <h1 class="hero-name reveal reveal-delay-1">
+      Karthick<br>
+      <span class="line2">Shanmugam</span>
+    </h1>
+    <p class="hero-role reveal reveal-delay-2">
+      Industrial Automation &amp; Industry 4.0 Engineer
+    </p>
+    <p class="hero-desc reveal reveal-delay-2">
+      EEE Graduate with hands-on expertise in PLC programming, VFD configuration,
+      and control panel integration. Building the bridge between operational technology
+      and IIoT — one ladder rung at a time.
+    </p>
+    <div class="hero-cta reveal reveal-delay-3">
+      <a href="#projects" class="btn-primary">View My Work ↓</a>
+      <a href="https://github.com/Karthick612003" target="_blank" class="btn-secondary">GitHub ↗</a>
+    </div>
+    <div class="hero-stats reveal reveal-delay-3">
+      <div class="stat">
+        <span class="stat-val">16+</span>
+        <span class="stat-label">Months Experience</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">5</span>
+        <span class="stat-label">PLC Dojo Courses</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">4+</span>
+        <span class="stat-label">IIoT Projects</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">2</span>
+        <span class="stat-label">GitHub Repos</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="sec-label reveal">Who I Am</div>
+  <div class="sec-title reveal">About <em>Me</em></div>
+  <div class="grid">
+    <div class="about-text reveal">
+      <p>
+        I'm an <b>Electrical & Electronics Engineering graduate (2025)</b> currently working
+        as an Application Engineer at <b>Global Industrial Garment Machines (GIGM)</b>, Bengaluru.
+        My daily work involves control panel wiring, schematic tracing, digital/analog I/O testing,
+        and configuring <b>Nidec S100/C200 Variable Frequency Drives</b>.
+      </p>
+      <p>
+        I'm actively transitioning into <b>Industrial Automation Design and Industry 4.0</b> —
+        learning PLC logic design on Rockwell platforms, building IIoT pipelines with MQTT and
+        Modbus, and developing Python tools for machine health monitoring.
+      </p>
+      <p>
+        My most personal project is a <b>solar-powered, LoRa-based remote irrigation system</b>
+        I'm building for my family's farm in Tamil Nadu — a real-world IIoT capstone that combines
+        ESP32, LoRa, MQTT, and Python into one complete pipeline.
+      </p>
+      <p>
+        I document everything on GitHub under <b>PLC_Programming</b> and
+        <b>Automation_Learning_Lab</b> — because learning in public is the best way to grow.
+      </p>
+    </div>
+    <div class="skills-grid reveal reveal-delay-1">
+      <div class="skill-bar">
+        <div class="skill-meta"><span class="skill-name">PLC PROGRAMMING (RSLOGIX 500)</span><span class="skill-pct">82%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="0.82"></div></div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-meta"><span class="skill-name">CONTROL PANEL & VFD HARDWARE</span><span class="skill-pct">90%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="0.90"></div></div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-meta"><span class="skill-name">PYTHON (INDUSTRIAL USE)</span><span class="skill-pct">55%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="0.55"></div></div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-meta"><span class="skill-name">MQTT / MODBUS / IIOT PROTOCOLS</span><span class="skill-pct">60%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="0.60"></div></div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-meta"><span class="skill-name">ESP32 / LORA / EMBEDDED</span><span class="skill-pct">65%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="0.65"></div></div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-meta"><span class="skill-name">AUTOCAD ELECTRICAL</span><span class="skill-pct">78%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="0.78"></div></div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-meta"><span class="skill-name">NODE-RED / SCADA (LEARNING)</span><span class="skill-pct">40%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-w="0.40"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Experience -->
+<section id="experience">
+  <div class="sec-label reveal">Work History</div>
+  <div class="sec-title reveal">Professional <em>Experience</em></div>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="t-period">Apr 2025 – Present</div>
+      <div class="t-role">Application Engineer</div>
+      <div class="t-company">Global Industrial Garment Machines Pvt. Ltd. — Bengaluru</div>
+      <ul class="t-bullets">
+        <li><b>Electrical Integration:</b> High-precision control panel wiring and layout verification for industrial machinery per IEC/UL/CE standards.</li>
+        <li><b>Analog Loop Validation:</b> 4-20mA loop verification and 24VDC digital I/O commissioning — identical to process instrumentation signals used in Yokogawa, Siemens, and ABB environments.</li>
+        <li><b>VFD Configuration:</b> Nidec S100/C200 parameter setup — ramp tuning, frequency limits, digital input mapping for multi-axis motor control.</li>
+        <li><b>Schematic Tracing:</b> Multi-axis control schematic verification, identifying wiring discrepancies for CE compliance.</li>
+        <li><b>BOM Optimisation:</b> Schematic-driven BOM analysis for cost-efficiency and component compatibility.</li>
+      </ul>
+    </div>
+    <div class="timeline-item reveal reveal-delay-1">
+      <div class="t-period">Jan 2025 – Mar 2025</div>
+      <div class="t-role">Engineering Intern</div>
+      <div class="t-company">Global Industrial Garment Machines Pvt. Ltd. — Bengaluru</div>
+      <ul class="t-bullets">
+        <li>3-month cross-departmental training: structural fabrication, electrical design, material procurement, and machine assembly line management.</li>
+      </ul>
+    </div>
+    <div class="timeline-item reveal reveal-delay-2">
+      <div class="t-period">Jan 2023 – Feb 2023</div>
+      <div class="t-role">In-Plant Trainee</div>
+      <div class="t-company">Salem Steel Plant — Salem, Tamil Nadu</div>
+      <ul class="t-bullets">
+        <li>Exposure to large-scale electrical distribution systems, HV substation operations, and heavy manufacturing plant safety standards.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects">
+  <div class="sec-label reveal">What I've Built</div>
+  <div class="sec-title reveal">Featured <em>Projects</em></div>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="proj-badge">ACTIVE</div>
+      <div class="proj-tag">IIoT / Farm Automation</div>
+      <div class="proj-title">Solar-Powered LoRa Farm Irrigation System</div>
+      <p class="proj-desc">
+        Building a solar-powered remote irrigation control system for my family's farm in Tamil Nadu.
+        Complete IIoT pipeline: field sensors → LoRa wireless → MQTT broker → Python dashboard
+        → remote solenoid valve control. Real hardware, real problem, real solution.
+      </p>
+      <div class="proj-stack">
+        <span class="stack-chip">ESP32</span>
+        <span class="stack-chip">LoRa SX1278</span>
+        <span class="stack-chip">MQTT</span>
+        <span class="stack-chip">Python</span>
+        <span class="stack-chip">Solar</span>
+        <span class="stack-chip">DHT22</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-1">
+      <div class="proj-tag">PLC / Control Logic</div>
+      <div class="proj-title">RSLogix 500 PLC Programs — GitHub Portfolio</div>
+      <p class="proj-desc">
+        Documented ladder logic programs in the PLC_Programming GitHub repo — motor sequencing,
+        HOA switching, alarm handling, analog scaling (4-20mA → RPM), and multi-routine project
+        architecture. Real programs, committed and version-controlled.
+      </p>
+      <div class="proj-stack">
+        <span class="stack-chip">RSLogix 500</span>
+        <span class="stack-chip">Ladder Logic</span>
+        <span class="stack-chip">HOA</span>
+        <span class="stack-chip">Analog Scaling</span>
+        <span class="stack-chip">GitHub</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-2">
+      <div class="proj-tag">Energy / Power Systems</div>
+      <div class="proj-title">Optimised Energy Management — Hybrid Microgrid</div>
+      <p class="proj-desc">
+        Designed an integrated control simulation to predict power generation and load requirements
+        across a hybrid wind-solar-battery microgrid system. Applied predictive modelling for
+        energy dispatch and battery state-of-charge optimisation.
+      </p>
+      <div class="proj-stack">
+        <span class="stack-chip">Microgrid</span>
+        <span class="stack-chip">Solar</span>
+        <span class="stack-chip">Wind</span>
+        <span class="stack-chip">Battery</span>
+        <span class="stack-chip">Simulation</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-1">
+      <div class="proj-tag">IoT / Precision Agriculture</div>
+      <div class="proj-title">Smart Irrigation System for Precision Farming</div>
+      <p class="proj-desc">
+        IoT automation module using ESP8266 NodeMCU with live sensor arrays (soil moisture, temperature,
+        humidity) integrated with Blynk IoT and ThingSpeak cloud for real-time environmental monitoring
+        and automated irrigation triggering.
+      </p>
+      <div class="proj-stack">
+        <span class="stack-chip">ESP8266</span>
+        <span class="stack-chip">Blynk IoT</span>
+        <span class="stack-chip">ThingSpeak</span>
+        <span class="stack-chip">Soil Sensor</span>
+        <span class="stack-chip">DHT22</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-2">
+      <div class="proj-tag">Embedded / GSM</div>
+      <div class="proj-title">Electricity Bill Automation via GSM</div>
+      <p class="proj-desc">
+        Diploma capstone: automated remote billing network using a microcontroller loop and GSM module
+        to transmit energy consumption telemetry directly to consumers via SMS.
+        Scored 95/100 in practical validation.
+      </p>
+      <div class="proj-stack">
+        <span class="stack-chip">Microcontroller</span>
+        <span class="stack-chip">GSM</span>
+        <span class="stack-chip">Embedded C</span>
+        <span class="stack-chip">Telemetry</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-3" style="border-style:dashed;opacity:0.7">
+      <div class="proj-tag">Coming Soon</div>
+      <div class="proj-title">Node-RED + MQTT Industrial Dashboard</div>
+      <p class="proj-desc">
+        Building a full OT-to-IT pipeline: Modbus TCP source → Node-RED edge logic → MQTT broker →
+        live dashboard. Phase 3 of the 18-month Industry 4.0 study plan.
+      </p>
+      <div class="proj-stack">
+        <span class="stack-chip">Node-RED</span>
+        <span class="stack-chip">Modbus TCP</span>
+        <span class="stack-chip">MQTT</span>
+        <span class="stack-chip">OPC UA</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Certifications -->
+<section id="certifications">
+  <div class="sec-label reveal">Credentials</div>
+  <div class="sec-title reveal">Certifications &amp; <em>Training</em></div>
+  <div class="certs-grid">
+
+    <div class="cert-card reveal">
+      <div class="cert-icon done">🏆</div>
+      <div>
+        <div class="cert-name">PLC Fundamentals — Level 1</div>
+        <div class="cert-by">PLC Dojo (Paul Lynn) · Nov 2025</div>
+        <span class="cert-status done">✓ Completed</span>
+      </div>
+    </div>
+
+    <div class="cert-card reveal reveal-delay-1">
+      <div class="cert-icon wip">⚙️</div>
+      <div>
+        <div class="cert-name">Applied Logic — Level 2</div>
+        <div class="cert-by">PLC Dojo (Paul Lynn) · 2026</div>
+        <span class="cert-status wip">In Progress</span>
+      </div>
+    </div>
+
+    <div class="cert-card reveal reveal-delay-2">
+      <div class="cert-icon up">📺</div>
+      <div>
+        <div class="cert-name">Process Visualisation — Level 3</div>
+        <div class="cert-by">PLC Dojo (Paul Lynn) · 2026</div>
+        <span class="cert-status up">Upcoming</span>
+      </div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-icon up">🔧</div>
+      <div>
+        <div class="cert-name">IEC Paradigms — Level 4</div>
+        <div class="cert-by">PLC Dojo (Paul Lynn) · 2026</div>
+        <span class="cert-status up">Upcoming</span>
+      </div>
+    </div>
+
+    <div class="cert-card reveal reveal-delay-1">
+      <div class="cert-icon up">🇩🇪</div>
+      <div>
+        <div class="cert-name">TIA Portal Master Project — Level 5</div>
+        <div class="cert-by">PLC Dojo (Paul Lynn) · 2026</div>
+        <span class="cert-status up">Upcoming</span>
+      </div>
+    </div>
+
+    <div class="cert-card reveal reveal-delay-2">
+      <div class="cert-icon done">📐</div>
+      <div>
+        <div class="cert-name">AutoCAD Electrical (Certified)</div>
+        <div class="cert-by">Internshala · Score: 100%</div>
+        <span class="cert-status done">✓ Completed</span>
+      </div>
+    </div>
+
+    <div class="cert-card reveal">
+      <div class="cert-icon done">📡</div>
+      <div>
+        <div class="cert-name">IoT &amp; Sensor Integration</div>
+        <div class="cert-by">6-Day Hands-On Training</div>
+        <span class="cert-status done">✓ Completed</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Tech Stack -->
+<section id="stack">
+  <div class="sec-label reveal">Tools & Technologies</div>
+  <div class="sec-title reveal">My <em>Tech Stack</em></div>
+  <div class="stack-section">
+    <div class="stack-group reveal">
+      <div class="stack-group-title">PLC & Automation</div>
+      <div class="stack-items">
+        <span class="stack-item">RSLogix 500</span>
+        <span class="stack-item">RSLogix Emulate</span>
+        <span class="stack-item">FactoryTalk View</span>
+        <span class="stack-item">Ladder Logic</span>
+        <span class="stack-item">HOA Programming</span>
+        <span class="stack-item">Alarm Handling</span>
+      </div>
+    </div>
+    <div class="stack-group reveal reveal-delay-1">
+      <div class="stack-group-title">IIoT & Protocols</div>
+      <div class="stack-items">
+        <span class="stack-item">MQTT</span>
+        <span class="stack-item">Modbus RTU</span>
+        <span class="stack-item">Modbus TCP</span>
+        <span class="stack-item">OPC UA</span>
+        <span class="stack-item">EtherNet/IP</span>
+        <span class="stack-item">LoRaWAN</span>
+        <span class="stack-item">Node-RED</span>
+      </div>
+    </div>
+    <div class="stack-group reveal reveal-delay-2">
+      <div class="stack-group-title">Hardware & Embedded</div>
+      <div class="stack-items">
+        <span class="stack-item">ESP32</span>
+        <span class="stack-item">ESP8266</span>
+        <span class="stack-item">LoRa SX1278</span>
+        <span class="stack-item">Nidec S100 VFD</span>
+        <span class="stack-item">Nidec C200 VFD</span>
+        <span class="stack-item">Relay Modules</span>
+        <span class="stack-item">DHT22</span>
+      </div>
+    </div>
+    <div class="stack-group reveal">
+      <div class="stack-group-title">Software & Design</div>
+      <div class="stack-items">
+        <span class="stack-item">Python</span>
+        <span class="stack-item">pymodbus</span>
+        <span class="stack-item">paho-mqtt</span>
+        <span class="stack-item">matplotlib</span>
+        <span class="stack-item">AutoCAD Electrical</span>
+        <span class="stack-item">GitHub</span>
+        <span class="stack-item">Arduino IDE</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="sec-label reveal" style="justify-content:center">Get In Touch</div>
+    <div class="sec-title reveal">Let's <em>Connect</em></div>
+    <p class="contact-desc reveal">
+      I'm actively looking for Automation Engineer / GET roles in Bengaluru and across India.
+      If you're hiring or want to collaborate on an industrial automation or IIoT project — I'd love to hear from you.
+    </p>
+    <a class="contact-email reveal" href="mailto:karthickshanmugamm@gmail.com">
+      karthickshanmugamm@gmail.com
+    </a>
+    <div class="contact-links reveal reveal-delay-1">
+      <a href="https://linkedin.com/in/karthick6123" target="_blank" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/Karthick612003" target="_blank" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        PLC_Programming
+      </a>
+      <a href="https://github.com/Karthick612003" target="_blank" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        Automation_Lab
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-left">© 2026 Karthick Shanmugam — Bengaluru, India</div>
+  <div class="footer-right">Built for <span>Industry 4.0</span> — Hosted on GitHub Pages</div>
+</footer>
+
+<script>
+// ── Custom cursor ──────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+});
+(function animRing(){
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cursor.style.transform='translate(-50%,-50%) scale(2.5)';
+    ring.style.transform='translate(-50%,-50%) scale(1.5)';
+    ring.style.borderColor='var(--orange)';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cursor.style.transform='translate(-50%,-50%) scale(1)';
+    ring.style.transform='translate(-50%,-50%) scale(1)';
+    ring.style.borderColor='var(--accent)';
+  });
+});
+
+// ── Card glow follow ───────────────────────────────────────────────
+document.querySelectorAll('.project-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width*100).toFixed(1);
+    const y=((e.clientY-r.top)/r.height*100).toFixed(1);
+    card.style.setProperty('--mx',x+'%');
+    card.style.setProperty('--my',y+'%');
+  });
+});
+
+// ── Scroll reveal ─────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      // Animate skill bars when they appear
+      entry.target.querySelectorAll('.skill-fill').forEach(bar=>{
+        const w = bar.dataset.w;
+        bar.style.transform=`scaleX(${w})`;
+        bar.classList.add('animate');
+      });
+    }
+  });
+},{threshold:0.12});
+
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ── Nav scroll effect ─────────────────────────────────────────────
+window.addEventListener('scroll',()=>{
+  document.querySelector('nav').style.background=
+    window.scrollY>40?'rgba(6,14,24,0.97)':'rgba(6,14,24,0.85)';
+});
+
+// ── Smooth active nav link ─────────────────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{
+    if(window.scrollY>=s.offsetTop-100) current=s.id;
+  });
+  navLinks.forEach(a=>{
+    a.style.color = a.getAttribute('href')==='#'+current
+      ? 'var(--white)' : '';
+  });
+});
+</script>
+</body>
+</html>
